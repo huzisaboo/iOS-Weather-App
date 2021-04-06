@@ -45,8 +45,8 @@ class WeatherTableViewCell: UITableViewCell {
             self.iconImageView.image = UIImage(named: "rain")
         }
         else {
-            // cloud icon
-            self.iconImageView.image = UIImage(named: "clear")
+          
+            self.iconImageView.image = UIImage(named: "cloud")
         }
 
     }

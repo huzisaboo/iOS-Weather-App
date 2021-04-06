@@ -122,15 +122,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         locationLabel.textAlignment = .center
         summaryLabel.textAlignment = .center
 
-        locationLabel.text = "Current Location"
+        //locationLabel.text = "Current Location"
 
         guard let currentWeather = self.current else {
             return UIView()
         }
-
+        
+        
         tempLabel.text = "\((Int(currentWeather.temperature) - 32) * 5/9)°"
-        tempLabel.font = UIFont(name: "Helvetica-Bold", size: 32)
-        summaryLabel.text = self.current?.summary
+        tempLabel.font = UIFont(name: "Helvetica-Bold", size: 65)
+        
+//-----------------------something is wrong here , Summary is not accurate---------------------------------
+        summaryLabel.text = currentWeather.summary
+        summaryLabel.font = UIFont(name: "Helvetica-Bold", size: 40)
 
         return headerVIew
     }
@@ -152,6 +156,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HourlyTableViewCell.identifier, for: indexPath) as! HourlyTableViewCell
             cell.configure(with: hourlyModels)
