@@ -14,7 +14,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet var table: UITableView!
     var models = [DailyWeatherEntry]()
     var hourlyModels = [HourlyWeatherEntry]()
-
+    var timezone: String?
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var current: CurrentWeather?
@@ -63,7 +63,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let lat = currentLocation.coordinate.latitude
 
         let url = "https://api.darksky.net/forecast/ddcc4ebb2a7c9930b90d9e59bda0ba7a/\(lat),\(long)?exclude=[flags,minutely]"
-
+        
         URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, response, error in
 
             // Validation
@@ -87,14 +87,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
 
             let entries = result.daily.data
-
+            
             self.models.append(contentsOf: entries)
 
             let current = result.currently
             self.current = current
 
             self.hourlyModels = result.hourly.data
-
+            self.timezone = result.timezone
             // Update user interface
             DispatchQueue.main.async {
                 self.table.reloadData()
@@ -121,9 +121,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tempLabel.textAlignment = .center
         locationLabel.textAlignment = .center
         summaryLabel.textAlignment = .center
-
-        //locationLabel.text = "Current Location"
-
+        
+        locationLabel.text = self.timezone
+        locationLabel.font = UIFont(name: "Helvetica", size: 50)
         guard let currentWeather = self.current else {
             return UIView()
         }
@@ -134,7 +134,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
 //-----------------------something is wrong here , Summary is not accurate---------------------------------
         summaryLabel.text = currentWeather.summary
-        summaryLabel.font = UIFont(name: "Helvetica-Bold", size: 40)
+        summaryLabel.font = UIFont(name: "Helvetica", size: 40)
 
         return headerVIew
     }
